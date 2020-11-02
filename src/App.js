@@ -10,24 +10,22 @@ function App() {
     api.get('repositories').then(response => {
       setRepository(response.data)
       })
-  }, [repositories])
+  }, [])
 
   async function handleAddRepository() {
     const response = await api.post('repositories',{
       title: `My repository ${Date.now()}`,
       url: "https://github.com/MichelMLeal/Desafio_React.js.git",
-      techs: ["Node.js", "React.js", "..."],
-      like: 0
+      techs: ["Node.js", "React.js", "..."]
     });
-
-    const repository = response.data;
-
-    setRepository([...repositories, repository]);
+    setRepository([...repositories,  response.data]);
   }
 
   async function handleRemoveRepository(id) {
-    await api.delete(`/repositories/${id}`);
-    setRepository([...repositories]);
+    await api.delete(`/repositories/${id}`)
+    setRepository(repositories.filter(
+      repository => repository.id !== id
+    ));
   }
 
   return (
